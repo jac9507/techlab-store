@@ -1,14 +1,29 @@
 {
-  "name": "techla-store",
+  "name": "techlab-store",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
-
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jac9507/techlab-store.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "bugs": {
+    "url": "https://github.com/jac9507/techlab-store/issues"
+  },
+  "homepage": "https://github.com/jac9507/techlab-store#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "firebase": "^12.6.0",
+    "jsonwebtoken": "^9.0.3"
+  }
 }

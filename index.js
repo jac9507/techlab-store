@@ -1,45 +1,29 @@
-// Captura los argumentos ingresados desde la terminal (ej: GET products)
-const args = process.argv.slice(2);
-const [method, resource, ...rest] = args;
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import 'dotenv/config';
 
-// Extrae método HTTP, recurso y parámetros desde la terminal para construir la petición
+//Routers
+import productsRouter from './src/routes/products.routes.js';
+import authRouter from './src/routes/auth.routes.js';
 
-const BASE_URL = "https://fakestoreapi.com";
-// URL base de la API FakeStore — se usa como punto de partida para todas las peticiones
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Realiza una petición HTTP a la API FakeStore usando fetch y muestra el resultado en consola
-// Admite métodos GET, POST, DELETE y cuerpo opcional para enviar datos
-async function request(method, endpoint, body = null) {
-    const config = {
-        method,
-        headers: { "Content-Type": "application/json" },
-    };
-    if (body) config.body = JSON.stringify(body);
+//Middlewares globales
+app.use(cors());
+app.use(bodyParser.json());
 
-    try {
-        const res = await fetch(`${BASE_URL}/${endpoint}`, config);
-        const data = await res.json();
-        console.log(data);
-    } catch (error) {
-        console.error("Error:", error.message);
-    }
-}
+//Rutas
+app.use('/api', productsRouter);
+app.use('/auth', authRouter);
 
-// Si el comando es GET products o GET products/<id>, consulta la API y muestra los productos
-if (method === "GET" && resource === "products") {
-    const id = rest[0];
-    const endpoint = id ? `products/${id}` : "products";
-    request("GET", endpoint);
-}
+//Middleware 404
+app.use((req, res) => {
+    res.status(404).json({ message: 'Recurso no encontrado' });
+});
 
-// Si el comando es POST products <title> <price> <category>, crea un nuevo producto en la API
-if (method === "POST" && resource === "products") {
-    const [title, price, category] = rest;
-    const body = { title, price: Number(price), category };
-    request("POST", "products", body);
-}
-
-if (method === "DELETE" && resource === "products") {
-    const id = rest[0];
-    request("DELETE", `products/${id}`);
-}
+//Start
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
