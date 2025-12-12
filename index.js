@@ -19,8 +19,8 @@ app.use('/api', productsRouter);
 app.use('/auth', authRouter);
 
 //Middleware 404
-app.use((req, res) => {
-    res.status(404).json({ message: 'Recurso no encontrado' });
+app.use((req, res, next) => {
+res.status(404).send('Recurso no encontrado');
 });
 
 //Start
